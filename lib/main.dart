@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -26,11 +28,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Timer timer;
+  final duration = new Duration(milliseconds: 300);
 
-  void _incrementCounter() {
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
+
+  void _incrementCounter(Timer timer) {
     setState(() {
       _counter++;
     });
+  }
+
+  void onTapDown(TapDownDetails tap) {
+    _incrementCounter(null);
+    timer = new Timer.periodic(duration, _incrementCounter);
+  }
+
+  void onTapup(TapUpDetails tap) {
+    timer?.cancel();
   }
 
   @override
@@ -53,10 +72,24 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButton: GestureDetector(
+        onTapDown: onTapDown,
+        onTapUp: onTapup,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black38, blurRadius: 4, offset: Offset(1, 1)),
+              ]),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
