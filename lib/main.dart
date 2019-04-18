@@ -52,6 +52,55 @@ class _MyHomePageState extends State<MyHomePage> {
     timer?.cancel();
   }
 
+  Widget _buildClapButton() {
+    return GestureDetector(
+      onTapDown: onTapDown,
+      onTapUp: onTapup,
+      child: Container(
+        width: 56,
+        height: 56,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black38, blurRadius: 4, offset: Offset(1, 1)),
+            ]),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 40,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScoreButton() {
+    return Positioned(
+      bottom: 100,
+      width: 56,
+      height: 56,
+      child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: Colors.blue,
+              width: 1,
+            ),
+          ),
+          child: Center(
+              child: Text(
+            "+" + _counter.toString(),
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ))),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,23 +121,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: GestureDetector(
-        onTapDown: onTapDown,
-        onTapUp: onTapup,
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black38, blurRadius: 4, offset: Offset(1, 1)),
-              ]),
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 40,
-          ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: Stack(
+          alignment: FractionalOffset.center,
+          overflow: Overflow.visible,
+          children: <Widget>[
+            _buildClapButton(),
+            _buildScoreButton(),
+          ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
